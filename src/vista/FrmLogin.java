@@ -1,6 +1,11 @@
 package vista;
 
+import contralador.CtrlUsuario;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.JOptionPane;
+import modelo.Usuario;
 
 public class FrmLogin extends javax.swing.JFrame {
     
@@ -10,6 +15,12 @@ public class FrmLogin extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setTitle("Login - sitemaVentas");
         this.setSize(new Dimension(700, 500));
+    }
+    
+     @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("img/ventas.png"));
+        return retValue;
     }
     
     @SuppressWarnings("unchecked")
@@ -29,6 +40,7 @@ public class FrmLogin extends javax.swing.JFrame {
         jButton_IniciarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 0, 0));
@@ -88,12 +100,27 @@ public class FrmLogin extends javax.swing.JFrame {
                 txt_usuarioActionPerformed(evt);
             }
         });
+        txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_usuarioKeyPressed(evt);
+            }
+        });
 
         txt_password.setBackground(new java.awt.Color(255, 255, 255));
+        txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_passwordKeyPressed(evt);
+            }
+        });
 
         jButton_IniciarSesion.setBackground(new java.awt.Color(255, 0, 0));
         jButton_IniciarSesion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton_IniciarSesion.setText("Iniciar Sesion");
+        jButton_IniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_IniciarSesionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -142,6 +169,22 @@ public class FrmLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_usuarioActionPerformed
 
+    private void jButton_IniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_IniciarSesionActionPerformed
+     this.Login();
+    }//GEN-LAST:event_jButton_IniciarSesionActionPerformed
+
+    private void txt_usuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyPressed
+        if(evt.getKeyCode() == evt.VK_ENTER){
+            txt_password.requestFocus();
+        }
+    }//GEN-LAST:event_txt_usuarioKeyPressed
+
+    private void txt_passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyPressed
+         if(evt.getKeyCode() == evt.VK_ENTER){
+            this.Login();
+        }
+    }//GEN-LAST:event_txt_passwordKeyPressed
+
     public static void main(String args[]) {
         
         try {
@@ -169,7 +212,7 @@ public class FrmLogin extends javax.swing.JFrame {
             }
         });
     }
-
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_IniciarSesion;
     private javax.swing.JLabel jLabel1;
@@ -183,4 +226,22 @@ public class FrmLogin extends javax.swing.JFrame {
     private javax.swing.JPasswordField txt_password;
     private javax.swing.JTextField txt_usuario;
     // End of variables declaration//GEN-END:variables
+private void Login(){
+    if (!txt_usuario.getText().isEmpty() && !txt_password.getText().isEmpty()) {
+        
+        CtrlUsuario controlUsuario = new CtrlUsuario();
+        Usuario usuario = new Usuario();
+        usuario.setUsuario(txt_usuario.getText().trim());
+        usuario.setPassword(txt_password.getText().trim());
+        
+        if (controlUsuario.loginUser(usuario)) {
+            JOptionPane.showMessageDialog(null, "Inicio EXITOSO");
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuario O Password Incorrecto");
+        }
+        
+    } else {
+        JOptionPane.showMessageDialog(null, "Ingreses Sus Credenciales");
+    }
+}
 }
