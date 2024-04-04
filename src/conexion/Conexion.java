@@ -9,7 +9,7 @@ public class Conexion {
     public static Connection conector(){
         
         try {
-            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/abastos_wichitroco","root", "");
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/bd_sistema_ventas","root", "1234");
             return cn;
         } catch (SQLException e) {
             System.out.println("Error De Conexion BD"+e);
